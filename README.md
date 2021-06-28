@@ -470,3 +470,21 @@ Jun 28 03:15:06 ip-172-31-75-82.ec
 
 [docker_docs](https://docs.docker.com/engine/install/centos/)
 
+
+### creating docker build. 
+
+```
+niket@ip-172-31-75-82 pythonimg]$ docker  build  -t  python:ashuv2 -f python.dockerfile . 
+Sending build context to Docker daemon  4.608kB
+Step 1/7 : FROM python
+latest: Pulling from library/python
+0bc3020d05f1: Pull complete 
+a110e5871660: Pull complete 
+83d3c0fa203a: Pull complete 
+a8fd09c11b02: Pull complete 
+14feb89c4a52: Extracting   15.6MB/192.4MB
+70752631d778: Download complete 
+
+```
+
+
