@@ -1,1 +1,4 @@
-# cisco28thjune2021
+# Plan of traning and its execution 
+
+<img src="plan.png">
+
