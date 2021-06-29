@@ -288,3 +288,214 @@ NETWORK ID     NAME      DRIVER    SCOPE
    96  docker  run -itd --name ashuc222 --network ashubr2 --ip 192.168.100.200  alpine ping localhost 
    
  ```
+
+
+## DOcker image name reality 
+
+<img src="imgname.png">
+
+### to cross check we are doing image pull
+
+
+<img src="imgpull.png">
+
+### PUshing image to docker hub 
+
+```
+
+docker  tag  httpd:ashuciscov111   dockerashu/httpd:ashuciscov111
+
+--
+
+niket@ip-172-31-75-82 mydockerimages]$ docker  login  
+Login with your Docker ID to push and pull images from Docker Hub. If you don't have a Docker ID, head over to https://hub.docker.com to create one.
+Username: dockerashu
+Password: 
+WARNING! Your password will be stored unencrypted in /home/niket/.docker/config.json.
+Configure a credential helper to remove this warning. See
+https://docs.docker.com/engine/reference/commandline/login/#credentials-store
+
+Login Succeeded
+
+---
+
+niket@ip-172-31-75-82 mydockerimages]$ docker  push  dockerashu/httpd:ashuciscov111
+The push refers to repository [docker.io/dockerashu/httpd]
+b293cc1ac5f3: Pushed 
+9436d7b1e704: Pushed 
+2653d992f4ef: Layer already exists 
+ashuciscov111: digest: sha256:b0d9dc2fc318b930d3278537f3c46b928fe6bdab070739e18eb31c4d7f709490 size: 950
+
+---
+```
+
+### summary 
+
+```
+107  docker  tag  httpd:ashuciscov111   dockerashu/httpd:ashuciscov111
+  108  docker  images
+  109  history 
+  110  docker  images
+  111  history 
+  112  docker  login  
+  113  docker  push  dockerashu/httpd:ashuciscov111
+  114  history 
+  115  docker logout 
+  
+ ```
+ 
+ ## Docker storage concept 
+ 
+ ### 
+ 
+ <img src="st.png">
+ 
+ ### creating docker volume 
+ 
+ ```
+ niket@ip-172-31-75-82 mydockerimages]$ docker  volume  create  ashuvol1 
+ashuvol1
+[niket@ip-172-31-75-82 mydockerimages]$ docker  volume  ls
+DRIVER    VOLUME NAME
+local     ashuvol1
+
+```
+
+### creating volume 
+
+```
+[niket@ip-172-31-75-82 mydockerimages]$ docker  volume   inspect  ashuvol1
+[
+    {
+        "CreatedAt": "2021-06-29T09:51:54Z",
+        "Driver": "local",
+        "Labels": {},
+        "Mountpoint": "/var/lib/docker/volumes/ashuvol1/_data",
+        "Name": "ashuvol1",
+        "Options": {},
+        "Scope": "local"
+    }
+]
+
+```
+
+### volume creation steps 
+
+```
+[niket@ip-172-31-75-82 mydockerimages]$ docker  volume  ls
+DRIVER    VOLUME NAME
+local     ashuvol1
+local     dipanjanvol1
+[niket@ip-172-31-75-82 mydockerimages]$ docker  run  -it --name ashucc11  -v ashuvol1:/mnt/cisco:rw     alpine sh 
+/ # 
+/ # 
+/ # cd  /mnt/cisco/
+/mnt/cisco # ls
+/mnt/cisco # mkdir  hello cisco 
+/mnt/cisco # ls
+cisco  hello
+/mnt/cisco # echo  hey Guys  >data.txt
+/mnt/cisco # ls
+cisco     data.txt  hello
+/mnt/cisco # exit
+[niket@ip-172-31-75-82 mydockerimages]$ docker  rm  ashucc1 ashucc11 
+ashucc1
+ashucc11
+[niket@ip-172-31-75-82 mydockerimages]$ docker  volume  ls
+DRIVER    VOLUME NAME
+local     ashuvol1
+local     dipanjanvol1
+local     sanjay1
+local     sathyavol1
+local     subhamvol1
+local     thiruvol1
+[niket@ip-172-31-75-82 mydockerimages]$ docker  run -it  --name ashucx1  -v  ashuvol1:/okdata  centos bash 
+[root@774b37603513 /]# 
+[root@774b37603513 /]# 
+[root@774b37603513 /]# 
+[root@774b37603513 /]# cd  /okdata/
+[root@774b37603513 okdata]# ls
+cisco  data.txt  hello
+[root@774b37603513 okdata]# exit
+exit
+
+```
+
+## POrtainer webui using Container 
+
+```
+docker  run -itd --name webui -p 9000:9000 -v  /var/run/docker.sock:/var/run/docker.sock  portainer/portainer:latest  
+```
+
+## Docker compose 
+
+### intro
+
+<img src="intro.png">
+
+### Installing docker-compose client 
+
+[compose](https://docs.docker.com/compose/install/)
+
+## compose file version 
+
+<img src="composefile.png">
+
+### Example1 
+
+```
+[niket@ip-172-31-75-82 mydockerimages]$ cd  ashucompose/
+[niket@ip-172-31-75-82 ashucompose]$ ls
+docker-compose.yaml
+[niket@ip-172-31-75-82 ashucompose]$ docker-compose up -d 
+Creating network "ashucompose_default" with the default driver
+Creating ashuxcc1 ... done
+[niket@ip-172-31-75-82 ashucompose]$ docker-compose ps
+  Name         Command       State   Ports
+------------------------------------------
+ashuxcc1   ping google.com   Up           
+[niket@ip-172-31-75-82 ashucompose]$ docker-compose images
+Container   Repository    Tag       Image Id       Size  
+---------------------------------------------------------
+ashuxcc1    alpine       latest   d4ff818577bc   5.595 MB
+[niket@ip-172-31-75-82 ashucompose]$ 
+
+```
+
+### more docker compsoe commands
+
+```
+docker-compose up -d 
+  180  docker-compose ps
+  181  docker-compose images
+  182  docker-compose  stop 
+  183  docker-compose  ps
+  184  docker-compose  start
+  185  docker-compose  ps
+  186  history 
+  187  docker-compose  kill
+  188  docker-compose  rm
+  189  docker-compose  up -d
+  190  history 
+  191  docker-compose  down
+  192  docker-compose  ps
+  193  docker-compose  images
+  
+```
+
+### using docker compose command 
+
+```
+208  docker-compose  stop  ashuapp1
+  209  docker-compose ps
+  210  docker-compose start 
+  211  docker-compose ps
+  212  history 
+  213  ls
+  214  docker-compose ps
+  215  ls
+  216  docker-compose  -f  ashu.yaml  ps
+  217  docker-compose  -f  ashu.yaml  down
+  
+```
+
