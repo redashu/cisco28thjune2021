@@ -211,3 +211,79 @@ round-trip min/avg/max = 0.114/0.132/0.150 ms
 
 
 
+### create static bridge
+
+```
+niket@ip-172-31-75-82 mydockerimages]$ docker  network ls
+NETWORK ID     NAME      DRIVER    SCOPE
+856e80a9ba74   bridge    bridge    local
+11897ad294d1   host      host      local
+7daac5c249e1   none      null      local
+[niket@ip-172-31-75-82 mydockerimages]$ docker  network  create  ashubr1 
+8aeb53891bdb39920cd6a8dc4657add0bb18eabe381f5ed14382e6778ee58c7f
+[niket@ip-172-31-75-82 mydockerimages]$ docker  network ls
+NETWORK ID     NAME      DRIVER    SCOPE
+8aeb53891bdb   ashubr1   bridge    local
+856e80a9ba74   bridge    bridge    local
+11897ad294d1   host      host      local
+7daac5c249e1   none      null      local
+[niket@ip-172-31-75-82 mydockerimages]$
+
+```
+
+### inspecting info
+
+```
+[niket@ip-172-31-75-82 mydockerimages]$ docker  network   inspect  ashubr1
+[
+    {
+        "Name": "ashubr1",
+        "Id": "8aeb53891bdb39920cd6a8dc4657add0bb18eabe381f5ed14382e6778ee58c7f",
+        "Created": "2021-06-29T07:06:18.040338749Z",
+        "Scope": "local",
+        "Driver": "bridge",
+        "EnableIPv6": false,
+        "IPAM": {
+            "Driver": "default",
+            "Options": {},
+            "Config": [
+                {
+                    "Subnet": "172.18.0.0/16",
+                    "Gateway": "172.18.0.1"
+                }
+            ]
+        },
+        
+  ```
+    
+  ### creating bridge and contaienrs
+    
+    ```
+    1  docker  network  ls
+   72  docker  network   inspect  856e80a9ba74 
+   73  docker  network ls
+   74  docker  run -it --rm --network  none alpine sh 
+   75  docker  run -itd  --name xx11  --network  none alpine sh 
+   76  docker  exec -it  xx11 sh 
+   77  docker  network  connect  856e80a9ba74  xx11
+   78  history 
+   79  docker  network  connect  856e80a9ba74  xx11
+   80  docker  update --help
+   81  history 
+   82  docker  network ls
+   83  docker  network  create  ashubr1 
+   84  docker  network ls
+   85  docker  network   inspect  ashubr1
+   86  history 
+   87  docker   network create  ashubr2  --subnet  192.168.100.0/24 
+   88  docker  network ls
+   89  history 
+   90  docker  network create  thirub2  --subnet  192.168.139.0/24
+   91  docker  network  l
+   92  docker  network  ls
+   93  history 
+   94  docker  run -itd --name ashuc1 --network ashubr1  alpine ping localhost 
+   95  docker  run -itd --name ashuc1111 --network ashubr1  alpine ping localhost 
+   96  docker  run -itd --name ashuc222 --network ashubr2 --ip 192.168.100.200  alpine ping localhost 
+   
+   ```
