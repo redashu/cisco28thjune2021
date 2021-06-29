@@ -134,4 +134,80 @@ docker  run -tid --name ashuc2  -p 1188:80  --memory=100m   --cpu-shares=30  htt
 
 ```
 
+## COntainer Bridge 
+
+<img src="br.png">
+
+### connecting containers 
+
+```
+[niket@ip-172-31-75-82 mydockerimages]$ docker  exec -it  ashuc1  sh 
+/ # 
+/ # ifconfig 
+eth0      Link encap:Ethernet  HWaddr 02:42:AC:11:00:02  
+          inet addr:172.17.0.2  Bcast:172.17.255.255  Mask:255.255.0.0
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:151 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:133 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0 
+          RX bytes:13750 (13.4 KiB)  TX bytes:12522 (12.2 KiB)
+
+lo        Link encap:Local Loopback  
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          UP LOOPBACK RUNNING  MTU:65536  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
+
+/ # ping  172.17.0.3
+PING 172.17.0.3 (172.17.0.3): 56 data bytes
+64 bytes from 172.17.0.3: seq=0 ttl=255 time=0.165 ms
+64 bytes from 172.17.0.3: seq=1 ttl=255 time=0.090 ms
+64 bytes from 172.17.0.3: seq=2 ttl=255 time=0.091 ms
+^C
+--- 172.17.0.3 ping statistics ---
+3 packets transmitted, 3 packets received, 0% packet loss
+round-trip min/avg/max = 0.090/0.115/0.165 ms
+/ # 
+
+```
+
+### more container operations 
+
+```
+niket@ip-172-31-75-82 mydockerimages]$ docker   inspect  ashuc1   --format='{{.NetworkSettings.IPAddress}}'
+172.17.0.2
+[niket@ip-172-31-75-82 mydockerimages]$ docker  ps
+CONTAINER ID   IMAGE     COMMAND             CREATED         STATUS         PORTS     NAMES
+5df056fdcce5   alpine    "ping fb.com"       4 minutes ago   Up 4 minutes             thv1
+6795998526ad   alpine    "ping fb.com"       5 minutes ago   Up 5 minutes             vrityc1
+4501deaea562   alpine    "ping fb.com"       5 minutes ago   Up 5 minutes             sanju1
+62a598bcd2ff   alpine    "ping fb.com"       5 minutes ago   Up 5 minutes             Dipanjan1
+8d2e3dc48939   alpine    "ping fb.com"       5 minutes ago   Up 5 minutes             sathyac1
+377e00812904   alpine    "ping google.com"   5 minutes ago   Up 5 minutes             himanshu
+421d180a6903   alpine    "ping google.com"   5 minutes ago   Up 5 minutes             subhamc1
+5cb9f7e5aa0b   alpine    "ping fb.com"       6 minutes ago   Up 6 minutes             ashuc1
+[niket@ip-172-31-75-82 mydockerimages]$ docker   inspect  thv1  --format='{{.NetworkSettings.IPAddress}}'
+172.17.0.9
+[niket@ip-172-31-75-82 mydockerimages]$ docker   inspect  vrityc1  --format='{{.NetworkSettings.IPAddress}}'
+172.17.0.8
+[niket@ip-172-31-75-82 mydockerimages]$ docker  exec -it ashuc1 sh 
+/ # ping 172.17.0.9
+PING 172.17.0.9 (172.17.0.9): 56 data bytes
+64 bytes from 172.17.0.9: seq=0 ttl=255 time=0.150 ms
+64 bytes from 172.17.0.9: seq=1 ttl=255 time=0.114 ms
+^C
+--- 172.17.0.9 ping statistics ---
+2 packets transmitted, 2 packets received, 0% packet loss
+round-trip min/avg/max = 0.114/0.132/0.150 ms
+/ # exit
+
+```
+
+### NAT
+
+<img src="nat.png">
+
+
 
