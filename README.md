@@ -258,8 +258,9 @@ NETWORK ID     NAME      DRIVER    SCOPE
     
   ### creating bridge and contaienrs
     
-    ```
-    1  docker  network  ls
+  ```
+  
+  1  docker  network  ls
    72  docker  network   inspect  856e80a9ba74 
    73  docker  network ls
    74  docker  run -it --rm --network  none alpine sh 
@@ -286,4 +287,4 @@ NETWORK ID     NAME      DRIVER    SCOPE
    95  docker  run -itd --name ashuc1111 --network ashubr1  alpine ping localhost 
    96  docker  run -itd --name ashuc222 --network ashubr2 --ip 192.168.100.200  alpine ping localhost 
    
-   ```
+ ```
