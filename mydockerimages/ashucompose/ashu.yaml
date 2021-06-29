@@ -1,0 +1,16 @@
+version: '3.8' # compose file version 
+services:
+    ashuapp1: # sample name of app 
+        image: alpine
+        container_name: ashuxcc1 
+        command: ping google.com # parent process
+    ashuapp2:
+        image: httpd:ashuciscov111
+        container_name: ashuxcc22
+        ports:
+            - "1133:80"
+
+# docker  network create  ashucompose_default 
+# docker run -itd --name ashuxcc1  --network ashucompose_default alpine ping google.com 
+    
+        
