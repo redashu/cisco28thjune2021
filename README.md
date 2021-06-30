@@ -175,5 +175,9 @@ minion2       Ready    <none>                 173m   v1.21.2
 
 
 
+### k8s cluster deployment 
+
+<img src="k8sd.png">
+
 
 
