@@ -277,5 +277,161 @@ ashupod123   1/1     Running   0          41s
 
 ```
 
+### Minion checked 
+
+```
+❯ kubectl  get  nodes
+NAME          STATUS   ROLES                  AGE     VERSION
+master-node   Ready    control-plane,master   5h55m   v1.21.2
+minion1       Ready    <none>                 5h54m   v1.21.2
+minion2       Ready    <none>                 5h54m   v1.21.2
+❯ kubectl  get  po
+NAME             READY   STATUS    RESTARTS   AGE
+ashupod123       1/1     Running   0          15m
+dipanjan1        1/1     Running   0          11m
+himanshupod123   1/1     Running   0          2m
+sanjaypod123     1/1     Running   0          12m
+sathyapod123     1/1     Running   0          12m
+subhampod123     1/1     Running   0          9m17s
+thirupod123      1/1     Running   0          9m37s
+vritypod123      1/1     Running   0          4m21s
+❯ kubectl  get  pod   ashupod123  -o wide
+NAME         READY   STATUS    RESTARTS   AGE   IP                NODE      NOMINATED NODE   READINESS GATES
+ashupod123   1/1     Running   0          15m   192.168.179.195   minion2   <none>           <none>
+
+
+```
+
+### POd info 
+
+```
+❯ kubectl  get  pod    -o wide
+NAME             READY   STATUS    RESTARTS   AGE     IP                NODE      NOMINATED NODE   READINESS GATES
+ashupod123       1/1     Running   0          16m     192.168.179.195   minion2   <none>           <none>
+dipanjan1        1/1     Running   0          13m     192.168.179.196   minion2   <none>           <none>
+himanshupod123   1/1     Running   0          3m37s   192.168.34.6      minion1   <none>           <none>
+sanjaypod123     1/1     Running   0          14m     192.168.34.4      minion1   <none>           <none>
+sathyapod123     1/1     Running   0          14m     192.168.34.3      minion1   <none>           <none>
+subhampod123     1/1     Running   0          10m     192.168.34.5      minion1   <none>           <none>
+thirupod123      1/1     Running   0          11m     192.168.179.197   minion2   <none>           <none>
+vritypod123      1/1     Running   0          5m58s   192.168.179.198   minion2   <none>           <none>
+
+```
+
+### Generating YAML file 
+
+```
+ kubectl  run  ashupod2  --image=dockerashu/httpd:ashuciscov111  --port=80 --dry-run=client  -o yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: ashupod2
+  name: ashupod2
+spec:
+  containers:
+  - image: dockerashu/httpd:ashuciscov111
+    name: ashupod2
+    ports:
+    - containerPort: 80
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}
+❯ kubectl  run  ashupod2  --image=dockerashu/httpd:ashuciscov111  --port=80 --dry-run=client  -o yaml >pod2.yaml
+```
+
+### Deleting pods 
+
+```
+❯ kubectl  delete  pod ashupod123
+pod "ashupod123" deleted
+❯ kubectl  delete  pod --all
+pod "ashupod2" deleted
+pod "dipanjan1" deleted
+pod "himanshupod123" deleted
+pod "himpod3" deleted
+pod "sanjaypod123" deleted
+pod "sanjupod2" deleted
+
+```
+
+### creating alpine yaml
+
+```
+❯ kubectl  run   ashupod3  --image=alpine  --dry-run=client -o yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: ashupod3
+  name: ashupod3
+spec:
+  containers:
+  - image: alpine
+    name: ashupod3
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}
+❯ kubectl  run   ashupod3  --image=alpine  --dry-run=client -o yaml  >alpine.yaml
+```
+
+### custom parent process 
+
+<img src="pp.png">
+
+##
+
+```
+❯ kubectl replace  -f  alpine.yaml  --force
+pod "ashupod3" deleted
+pod/ashupod3 replaced
+❯ kubectl  get  po
+NAME         READY   STATUS             RESTARTS   AGE
+ashupod3     1/1     Running            0          33s
+
+```
+
+### checking logs of pod
+
+```
+ kubectl  logs  -f  ashupod3 
+ 
+```
+
+### login into container running inside POD 
+
+```
+❯ kubectl  get  po
+NAME         READY   STATUS    RESTARTS   AGE
+ashupod3     1/1     Running   0          2m21s
+dipanjan1    1/1     Running   0          31s
+subhampod3   1/1     Running   0          118s
+thirupod3    1/1     Running   0          67s
+❯ kubectl  exec  -it  ashupod3  -- sh
+/ # 
+/ # 
+/ # 
+/ # 
+/ # exit
+❯ kubectl  exec  -it  ashupod3  -- sh
+/ # uname
+Linux
+/ # cat  /etc/os-release 
+NAME="Alpine Linux"
+ID=alpine
+VERSION_ID=3.14.0
+PRETTY_NAME="Alpine Linux v3.14"
+HOME_URL="https://alpinelinux.org/"
+BUG_REPORT_URL="https://bugs.alpinelinux.org/"
+/ # exit
+
+```
+
+
+
 
 
