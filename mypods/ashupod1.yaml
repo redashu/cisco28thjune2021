@@ -1,0 +1,12 @@
+apiVersion: v1 # k8s master apiversion
+kind: Pod # we are requisting for POD 
+metadata: # info about POD 
+ name: ashupod123 # name of the poD 
+spec: # info About your container
+ nodeName: minion1 # static scheduling  
+ containers:
+ - name: ashuc1 
+   image: dockerashu/httpd:ashuciscov111
+   ports:
+   - containerPort: 80
+ 
