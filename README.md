@@ -179,5 +179,103 @@ minion2       Ready    <none>                 173m   v1.21.2
 
 <img src="k8sd.png">
 
+## TO deploy k8s cluster in Lap / pc 
+
+### Installing minikube 
+
+```
+❯ curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-darwin-amd64
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100 60.4M  100 60.4M    0     0  5701k      0  0:00:10  0:00:10 --:--:-- 5872k
+❯ sudo install minikube-darwin-amd64 /usr/local/bin/minikube
+Password:
+❯ minikube version
+minikube version: v1.21.0
+commit: 76d74191d82c47883dc7e1319ef7cebd3e00ee11
+
+```
+
+### Installing. k8s cluster using minikube 
+
+```
+❯ minikube  start  --driver=docker
+😄  minikube v1.21.0 on Darwin 11.4
+🆕  Kubernetes 1.20.7 is now available. If you would like to upgrade, specify: --kubernetes-version=v1.20.7
+✨  Using the docker driver based on existing profile
+👍  Starting control plane node minikube in cluster minikube
+🚜  Pulling base image ...
+🤷  docker "minikube" container is missing, will recreate.
+🔥  Creating docker container (CPUs=2, Memory=1988MB) ...
+🐳  Preparing Kubernetes v1.20.2 on Docker 20.10.6 ...
+🔎  Verifying Kubernetes components...
+    ▪ Using image gcr.io/k8s-minikube/storage-provisioner:v5
+🌟  Enabled addons: storage-provisioner, default-storageclass
+🏄  Done! kubectl is now configured to use "minikube" cluster and "default" namespace by default
+
+```
+
+## COncept of context to check cluster 
+
+```
+❯ kubectl   config  get-contexts
+CURRENT   NAME                          CLUSTER      AUTHINFO           NAMESPACE
+          kubernetes-admin@kubernetes   kubernetes   kubernetes-admin   
+*         minikube                      minikube     minikube           default
+
+░▒▓ ~/Desktop ····················································································· 02:31:16 PM ▓▒░─╮
+❯                     
+
+
+```
+
+### checking nodes
+
+```
+❯ kubectl  get  nodes
+NAME       STATUS   ROLES                  AGE   VERSION
+minikube   Ready    control-plane,master   23d   v1.20.2
+
+```
+
+### switching context to switch cluster
+
+```
+❯ kubectl  config  use-context  kubernetes-admin@kubernetes
+Switched to context "kubernetes-admin@kubernetes".
+❯ kubectl   config  get-contexts
+CURRENT   NAME                          CLUSTER      AUTHINFO           NAMESPACE
+*         kubernetes-admin@kubernetes   kubernetes   kubernetes-admin   
+          minikube                      minikube     minikube           default
+❯ kubectl  get  nodes
+NAME          STATUS   ROLES                  AGE    VERSION
+master-node   Ready    control-plane,master   5h9m   v1.21.2
+minion1       Ready    <none>                 5h8m   v1.21.2
+minion2       Ready    <none>                 5h8m   v1.21.2
+
+
+```
+
+### Deploying application in k8s 
+
+<img src="appd.png">
+
+## COntainer vs POD 
+
+<img src="podintro.png">
+
+### deploying pods 
+
+```
+❯ kubectl  apply -f  ashupod1.yaml --dry-run=client
+pod/ashupod123 created (dry run)
+❯ kubectl  apply -f  ashupod1.yaml
+pod/ashupod123 created
+❯ kubectl  get  po
+NAME         READY   STATUS    RESTARTS   AGE
+ashupod123   1/1     Running   0          41s
+
+```
+
 
 
