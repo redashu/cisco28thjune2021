@@ -81,6 +81,98 @@ Removing login credentials for quay.io
 
 ```
 
+## COntainer orchestration problems 
+
+<img src="carch.png">
+
+## COntainer Orchestration engine 
+
+<img src="orch.png">
+
+## Kubernetes everywhere 
+
+<img src="k8s.png">
+
+# Kubernetes getting started
+
+## Level 1 arch 
+
+<img src="k8s1.png">
+
+## Kube-apiserver
+
+<img src="apis.png">
+
+
+## KUbernetes client 
+
+<img src="kubectl.png">
+
+### sharing token a auth file with clients 
+
+<img src="auth.png">
+
+### FRom client connecting to kubernetes master API server  
+
+```
+❯ cd  Desktop
+❯ ls
+DevopsSRE     admin.conf    auth.png      carch.png     helm2         k8s1.png      linksdex.txt  techienest
+PHD           apis.png      backup        ciscojune28th k8s.png       kubectl.png   orch.png      webapp_dev
+❯ kubectl  cluster-info   --kubeconfig  admin.conf
+Kubernetes control plane is running at https://50.17.5.161:6443
+CoreDNS is running at https://50.17.5.161:6443/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
+
+To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
+❯ 
+❯ kubectl  version    --kubeconfig  admin.conf
+Client Version: version.Info{Major:"1", Minor:"21", GitVersion:"v1.21.1", GitCommit:"5e58841cce77d4bc13713ad2b91fa0d961e69192", GitTreeState:"clean", BuildDate:"2021-05-12T14:18:45Z", GoVersion:"go1.16.4", Compiler:"gc", Platform:"darwin/amd64"}
+Server Version: version.Info{Major:"1", Minor:"21", GitVersion:"v1.21.2", GitCommit:"092fbfbf53427de67cac1e9fa54aaa09a28371d7", GitTreeState:"clean", BuildDate:"2021-06-16T12:53:14Z", GoVersion:"go1.16.5", Compiler:"gc", Platform:"linux/amd64"}
+❯ kubectl  get nodes    --kubeconfig  admin.conf
+NAME          STATUS   ROLES                  AGE    VERSION
+master-node   Ready    control-plane,master   166m   v1.21.2
+minion1       Ready    <none>                 166m   v1.21.2
+minion2       Ready    <none>                 165m   v1.21.2
+
+```
+
+### setting config file in MAC 
+
+```
+❯ whoami
+fire
+❯ 
+❯ cd  ~
+❯ pwd
+/Users/fire
+❯ cd  .kube
+❯ ls
+cache                  config                 http-cache             kubectl_autocompletion storage
+❯ rm  config
+❯ cp  -v  ~/Desktop/admin.conf   ~/.kube/config
+/Users/fire/Desktop/admin.conf -> /Users/fire/.kube/config
+❯ /Users/fire/.kube
+❯ kubectl  get  nodes
+NAME          STATUS   ROLES                  AGE    VERSION
+master-node   Ready    control-plane,master   174m   v1.21.2
+minion1       Ready    <none>                 173m   v1.21.2
+minion2       Ready    <none>                 173m   v1.21.2
+
+```
+
+### kube-schedular 
+
+<img src="sche.png">
+
+
+### node controller 
+
+<img src="node.png">
+
+### Replication controller 
+
+<img src="rc.png">
+
 
 
 
