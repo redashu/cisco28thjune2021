@@ -431,6 +431,36 @@ BUG_REPORT_URL="https://bugs.alpinelinux.org/"
 
 ```
 
+## Container networking 
+
+<img src="cni.png">
+
+## describing POD 
+
+<img src="podd.png">
+
+## port-forwarding options to access app running inthe POD 
+
+<img src="portf.png">
+
+### port forwarding 
+
+```
+❯ kubectl  port-forward   ashupod123  1234:80
+Forwarding from 127.0.0.1:1234 -> 80
+Forwarding from [::1]:1234 -> 80
+Handling connection for 1234
+Handling connection for 1234
+
+```
+
+## Introduction to service in k8s
+
+<img src="svc.png">
+
+## service label concept 
+
+<img src="svclb.png">
 
 
 
