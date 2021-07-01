@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: ashupod2
+  name: ashupod2 # name of POD 
+spec:
+  containers:
+  - image: dockerashu/httpd:ashuciscov111 # docker image from Docker hub 
+    name: ashupod2 # name of container 
+    ports:
+    - containerPort: 80 # application port 
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}

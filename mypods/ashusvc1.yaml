@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service 
+metadata:
+  creationTimestamp: null
+  labels: # label of service 
+    app: ashusvc1
+  name: ashusvc1 # name of service 
+spec:
+  ports:
+  - name: 1234-80
+    port: 1234 # service port that will be bounded with service IP 
+    protocol: TCP
+    targetPort: 80 # pod application port 
+  selector: # POD finder 
+    x: helloashu # exactly same label as pod have  type: NodePort # type of service 
+status:
+  loadBalancer: {}
