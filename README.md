@@ -290,3 +290,50 @@ ashuweb-7bb887d869-r8rt2   1/1     Running   0          57s
 
 ```
 
+### create dep
+
+```
+ kubectl  get deploy
+NAME      READY   UP-TO-DATE   AVAILABLE   AGE
+ashuweb   1/1     1            1           98m
+❯ kubectl  scale deployment  ashuweb  --replicas=3
+deployment.apps/ashuweb scaled
+❯ kubectl  get deploy
+NAME      READY   UP-TO-DATE   AVAILABLE   AGE
+ashuweb   3/3     3            3           98m
+❯ kubectl  get  po
+NAME                       READY   STATUS    RESTARTS   AGE
+ashuweb-7bb887d869-7gkch   1/1     Running   0          93m
+ashuweb-7bb887d869-qxxzw   1/1     Running   0          10s
+ashuweb-7bb887d869-xgw59   1/1     Running   0          10s
+
+```
+
+### deployment history 
+
+```
+❯ kubectl  rollout  history deployment  ashuweb
+deployment.apps/ashuweb 
+REVISION  CHANGE-CAUSE
+1         <none>
+2         <none>
+3         <none>
+
+❯ kubectl  rollout undo  deployment  ashuweb
+deployment.apps/ashuweb rolled back
+❯ kubectl  get  po
+NAME                       READY   STATUS             RESTARTS   AGE
+ashuweb-55dc4d88b4-gzwrf   1/1     Running            0          5m50s
+ashuweb-55dc4d88b4-x4x8s   1/1     Running            0          5m48s
+ashuweb-5fd5dbbbb-rkglb    0/1     InvalidImageName   0          7s
+❯ kubectl  rollout undo  deployment  ashuweb  --to-revision=1
+deployment.apps/ashuweb rolled back
+❯ kubectl  get  po
+NAME                       READY   STATUS        RESTARTS   AGE
+ashuweb-55dc4d88b4-gzwrf   0/1     Terminating   0          6m14s
+ashuweb-55dc4d88b4-x4x8s   0/1     Terminating   0          6m12s
+ashuweb-7bb887d869-khnqp   1/1     Running       0          9s
+ashuweb-7bb887d869-sdvzp   1/1     Running       0          7s
+
+```
+
