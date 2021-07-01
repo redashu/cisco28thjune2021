@@ -359,3 +359,63 @@ mylb      LoadBalancer   10.109.102.170   <pending>     80:32660/TCP   5s
 
 <img src="lbb.png">
 
+### testing pod networking 
+
+```
+❯ kubectl  run  testpod --image=alpine  --command ping fb.com
+pod/testpod created
+❯ kubectl  get  po
+NAME                       READY   STATUS    RESTARTS   AGE
+ashuweb-7bb887d869-khnqp   1/1     Running   0          94m
+ashuweb-7bb887d869-sdvzp   1/1     Running   0          94m
+testpod                    1/1     Running   0          5s
+❯ kubectl  get  po  -o wide
+NAME                       READY   STATUS    RESTARTS   AGE   IP                NODE      NOMINATED NODE   READINESS GATES
+ashuweb-7bb887d869-khnqp   1/1     Running   0          94m   192.168.179.252   minion2   <none>           <none>
+ashuweb-7bb887d869-sdvzp   1/1     Running   0          94m   192.168.34.8      minion1   <none>           <none>
+testpod                    1/1     Running   0          30s   192.168.179.197   minion2   <none>           <none>
+
+```
+
+### checking pod connection 
+
+```
+❯ kubectl  get  po  -o wide
+NAME                       READY   STATUS    RESTARTS   AGE   IP                NODE      NOMINATED NODE   READINESS GATES
+ashuweb-7bb887d869-khnqp   1/1     Running   0          94m   192.168.179.252   minion2   <none>           <none>
+ashuweb-7bb887d869-sdvzp   1/1     Running   0          94m   192.168.34.8      minion1   <none>           <none>
+testpod                    1/1     Running   0          30s   192.168.179.197   minion2   <none>           <none>
+❯ kubectl  exec -it  testpod  -- sh
+/ # ping 192.168.34.8
+PING 192.168.34.8 (192.168.34.8): 56 data bytes
+64 bytes from 192.168.34.8: seq=0 ttl=253 time=0.503 ms
+64 bytes from 192.168.34.8: seq=1 ttl=253 time=0.563 ms
+^C
+--- 192.168.34.8 ping statistics ---
+2 packets transmitted, 2 packets received, 0% packet loss
+round-trip min/avg/max = 0.503/0.533/0.563 ms
+/ # exit
+```
+
+### network policy 
+
+<img src="netpol.png">
+
+### NEtworking understanding 
+
+<img src="netu.png">
+
+### creating network policy 
+
+```
+❯ kubectl apply -f  netpol1.yaml
+networkpolicy.networking.k8s.io/mypolicy1 created
+❯ kubectl  get netpol
+NAME        POD-SELECTOR   AGE
+mypolicy1   run=testpod1   5s
+
+```
+
+### link for network policy 
+
+[Networkpolicy](https://docs.projectcalico.org/security/kubernetes-network-policy)
