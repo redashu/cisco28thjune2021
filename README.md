@@ -337,3 +337,25 @@ ashuweb-7bb887d869-sdvzp   1/1     Running       0          7s
 
 ```
 
+### Nodeport and Loadbalancer service for non cloud based cluster is same 
+
+```
+❯ kubectl  get deploy
+NAME      READY   UP-TO-DATE   AVAILABLE   AGE
+ashuweb   2/2     2            2           156m
+❯ kubectl get  svc
+NAME      TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)        AGE
+ashuweb   NodePort   10.102.90.221   <none>        80:32526/TCP   63m
+❯ kubectl  expose deploy  ashuweb  --type LoadBalancer  --port 80 --name mylb
+service/mylb exposed
+❯ kubectl  get  svc
+NAME      TYPE           CLUSTER-IP       EXTERNAL-IP   PORT(S)        AGE
+ashuweb   NodePort       10.102.90.221    <none>        80:32526/TCP   63m
+mylb      LoadBalancer   10.109.102.170   <pending>     80:32660/TCP   5s
+
+```
+
+## LB vs Np
+
+<img src="lbb.png">
+
