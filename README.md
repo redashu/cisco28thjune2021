@@ -267,8 +267,7 @@ deployment.apps/ashuweb created
 
 ###
 
-'''
-
+```
 
 034* kubectl create  deployment  ashuweb  --image=quay.io/redashu/webapp:ciscov1  --dry-run=client -o yaml   >mydeploy.yaml
 10035  history
