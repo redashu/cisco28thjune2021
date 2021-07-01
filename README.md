@@ -129,6 +129,84 @@ service "vrityc1" deleted
 <img src="dash.png">
 
 
+# Namespace concept 
+
+<img src="ns.png">
+
+## default namespaces in k8s
+
+<img src="defns.png">
+
+### kube-system namespaces 
+
+```
+❯ kubectl  get  pods  -n kube-system
+NAME                                       READY   STATUS    RESTARTS   AGE
+calico-kube-controllers-78d6f96c7b-gt7n9   1/1     Running   1          26h
+calico-node-447cn                          1/1     Running   1          26h
+calico-node-hc7cz                          1/1     Running   1          26h
+calico-node-lkwbp                          1/1     Running   1          26h
+coredns-558bd4d5db-6ppnj                   1/1     Running   1          26h
+coredns-558bd4d5db-cld55                   1/1     Running   1          26h
+etcd-master-node                           1/1     Running   1          26h
+kube-apiserver-master-node                 1/1     Running   1          26h
+kube-controller-manager-master-node        1/1     Running   1          26h
+kube-proxy-7fgm8                           1/1     Running   1          26h
+kube-proxy-xwqtp                           1/1     Running   1          26h
+kube-proxy-zlfl6                           1/1     Running   1          26h
+kube-scheduler-master-node                 1/1     Running   1          26h
+metrics-server-6fb5c69669-zkkmr            1/1     Running   1          26h
+
+```
+
+### creating namespace
+
+```
+❯ kubectl  create  namespace  ashu-project
+namespace/ashu-project created
+❯ kubectl   get   ns
+NAME                   STATUS   AGE
+ashu-project           Active   2s
+default                Active   26h
+kube-node-lease        Active   26h
+kube-public            Active   26h
+kube-system            Active   26h
+kubernetes-dashboard   Active   117m
+
+```
+
+### deleting all pods & services
+
+```
+❯ kubectl  delete all --all
+pod "ashupod123" deleted
+pod "dipanjan1" deleted
+pod "himanshupod123" deleted
+pod "sathyapod123" deleted
+pod "subhampod123" deleted
+pod "thirupod123" deleted
+pod "vritypod123" deleted
+service "ashusvc1" deleted
+service "dipanjansvc1" deleted
+service "hims2" deleted
+service "kubernetes" deleted
+service "sathyasvc1" deleted
+service "subhamsvc1" deleted
+
+```
+
+### setting default namespaces 
+
+```
+❯ kubectl  config  set-context  --current --namespace=ashu-project
+Context "kubernetes-admin@kubernetes" modified.
+❯ 
+❯ kubectl  config get-contexts
+CURRENT   NAME                          CLUSTER      AUTHINFO           NAMESPACE
+*         kubernetes-admin@kubernetes   kubernetes   kubernetes-admin   ashu-project
+          minikube                      minikube     minikube           default
+
+```
 
 
 
