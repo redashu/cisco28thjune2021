@@ -209,5 +209,85 @@ CURRENT   NAME                          CLUSTER      AUTHINFO           NAMESPAC
 ```
 
 
+### POD to deployment 
 
+<img src="dep.png">
+
+## Deployment to app
+
+### creating docker image
+
+<img src="img.png">
+
+### pushing image quay registry 
+
+```
+❯ docker images
+REPOSITORY                    TAG       IMAGE ID       CREATED              SIZE
+webapp                        ciscov1   36ac73f77b92   About a minute ago   133MB
+httpd                         cgiv1     b95116c9fdbf   2 days ago           287MB
+quay.io/redashu/httpd         cgiv1     b95116c9fdbf   2 days ago           287MB
+dockerashu/httpd              cgiv1     7dd624710447   2 days ago           287MB
+mariadb                       latest    6d5c5ed114ad   6 days ago           408MB
+nginx                         latest    4f380adfc10f   8 days ago           133MB
+gcr.io/k8s-minikube/kicbase   v0.0.22   bcd131522525   8 weeks ago          1.09GB
+centos                        latest    300e315adb2f   6 months ago         209MB
+❯ docker  tag  webapp:ciscov1   quay.io/redashu/webapp:ciscov1
+❯ docker login  quay.io
+Authenticating with existing credentials...
+Login Succeeded
+❯ docker  push quay.io/redashu/webapp:ciscov1
+The push refers to repository [quay.io/redashu/webapp]
+7123f09fcf16: Pushed 
+5f70bf18a086: Pushed 
+c6d74dcb7fe7: Pushed 
+b50a193ebf2e: Pushed 
+165eb6c3c0d3: Pushed 
+cf388fcf3527: Pushed 
+2418679ca01f: Pushed 
+764055ebc9a7: Pushed 
+ciscov1: digest: sha256:c1fbf022f35f1b0be9fd0aa65a6311339adfbbaded5eee6752766704a7edda96 size: 1985
+❯ docker logout quay.io
+Removing login credentials for quay.io
+
+```
+
+### creating deployment 
+
+```
+kubectl create  deployment  ashuweb  --image=quay.io/redashu/webapp:ciscov1  --dry-run=client -o yaml   >mydeploy.yaml
+```
+
+### deploy
+
+```
+❯ kubectl apply -f mydeploy.yaml
+deployment.apps/ashuweb created
+```
+
+###
+
+'''
+
+
+034* kubectl create  deployment  ashuweb  --image=quay.io/redashu/webapp:ciscov1  --dry-run=client -o yaml   >mydeploy.yaml
+10035  history
+10036* ls
+10037* kubectl apply -f mydeploy.yaml
+10038  kubectl  get  deployment
+10039  kubectl  get  deploy
+10040  kubectl  get  po 
+10041  kubectl apply -f mydeploy.yaml
+10042  kubectl  get  po 
+10043* kubectl replace -f mydeploy.yaml  --force
+10044  kubectl  get  deploy
+10045  kubectl  get  po 
+❯ kubectl  get  deploy
+NAME      READY   UP-TO-DATE   AVAILABLE   AGE
+ashuweb   1/1     1            1           52s
+❯ kubectl  get  po
+NAME                       READY   STATUS    RESTARTS   AGE
+ashuweb-7bb887d869-r8rt2   1/1     Running   0          57s
+
+```
 
