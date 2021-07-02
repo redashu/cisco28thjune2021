@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: ashu-project # name of namespace 
+  creationTimestamp: null
+  labels: # label of Deployment 
+    app: ashuweb
+  name: ashuweb # name of deployment 
+spec:
+  replicas: 2 # number of pods 
+  selector:
+    matchLabels:
+      app: ashuweb
+  strategy: {}
+  template: # template will be used to create pod 
+    metadata:
+      creationTimestamp: null
+      labels: # label of PODs 
+        app: ashuweb
+    spec: 
+      containers:
+      - image: quay.io/redashu/webapp:ciscov2 # docker image from Quay 
+        name: webapp # name of container 
+        resources: {}
+status: {}

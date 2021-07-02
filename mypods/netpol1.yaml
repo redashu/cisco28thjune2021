@@ -1,0 +1,14 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+ name: mypolicy1 
+ namespace: ashu-project
+spec: 
+ podSelector: # always for target pod
+  matchLabels:
+   run: testpod1 # label of Targetpod where i want to apply network  policy
+ ingress: 
+ - from: 
+   - podSelector:
+      matchLabels:
+       app: ashuweb # source pod from where we want to allow 
