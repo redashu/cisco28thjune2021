@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: ashuprivateapp
+  name: ashuprivateapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ashuprivateapp
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: ashuprivateapp
+    spec:
+      imagePullSecrets:
+      - name: ashureg
+      containers:
+      - image: quay.io/redashu/phpapp:v1
+        name: phpapp
+        ports:
+        - containerPort: 80 
+        resources: # put cgroup limits in pod 
+         requests: # default request by POD 
+          cpu: 200m 
+         limits: # max cpu consumption by my POD 
+          cpu: 500m 

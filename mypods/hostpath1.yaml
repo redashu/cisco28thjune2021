@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: ashupox12
+  name: ashupox12
+spec:
+  volumes:
+  - name: ashuvol2
+    hostPath:
+     path: /etc
+     type: Directory 
+  containers:
+  - args:
+    - ping
+    - fb.com
+    image: alpine
+    name: ashuc1 
+    volumeMounts:
+    - name: ashuvol2
+      mountPath: /myetc      readOnly: true 
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}

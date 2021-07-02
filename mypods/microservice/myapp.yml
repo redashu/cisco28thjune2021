@@ -52,3 +52,87 @@ spec:
             key: mypass # key name of secret
         resources: {}
 status: {}
+
+# creating Service ClusterIP type for DB pod /deploy
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: ashudb
+  name: ashudb
+  namespace: ashu-project
+spec:
+  ports:
+  - port: 3306
+    protocol: TCP
+    targetPort: 3306
+  selector:
+    app: ashudb
+  type: ClusterIP
+status:
+  loadBalancer: {}
+
+# webapp YAML 
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: ashuweb
+  name: ashuweb
+  namespace: ashu-project
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ashuweb
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: ashuweb
+    spec:
+      containers:
+      - image: wordpress:4.8-apache
+        name: wordpress
+        env: 
+        - name: WORDPRESS_DB_HOST
+          value: ashudb # service name of DB pod / deployment 
+        - name: WORDPRESS_DB_PASSWORD # reading password from secret 
+          valueFrom:
+           secretKeyRef:
+            name: ashusec1
+            key: mypass
+        resources: {}
+status: {}
+
+# creating service for sample app
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: ashuweb
+  name: ashuweb
+  namespace: ashu-project
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: ashuweb
+  type: NodePort
+status:
+  loadBalancer: {}
