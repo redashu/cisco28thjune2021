@@ -403,4 +403,82 @@ status:
 
 ```
 
+##  Private image deploying on K8s 
+
+### sample php app image
+
+```
+❯ ls
+Dockerfile index.php
+❯ docker build  -t  quay.io/redashu/phpapp:v1  .
+[+] Building 1.4s (2/3)                                                                        
+ => [internal] load build definition from Dockerfile                                      0.4s
+ => => transferring dockerfile: 164B                                                      0.1s
+ => [internal] load .dockerignore                                                         0.1s
+ => => transferring context: 2B                                                           0.0s
+ => [internal] load 
+ 
+```
+
+### create app deployment 
+
+```
+❯ kubectl  create deployment   ashuprivateapp  --image=quay.io/redashu/phpapp:v1   --dry-run=client -o yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: ashuprivateapp
+  name: ashuprivateapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ashuprivateapp
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: ashuprivateapp
+    spec:
+      containers:
+      - image: quay.io/redashu/phpapp:v1
+        name: phpapp
+        resources: {}
+status: {}
+
+
+```
+
+## Auto scaling 
+
+### Minion node 
+
+<img src="auto.png">
+
+### POD scaling 
+
+<img src="podauto.png">
+
+## HPA 
+
+<img src="hpa.png">
+
+### HPA apply 
+
+```
+❯ kubectl  get  deploy
+NAME             READY   UP-TO-DATE   AVAILABLE   AGE
+ashuprivateapp   1/1     1            1           43m
+❯ 
+❯ kubectl  autoscale  deployment ashuprivateapp  --cpu-percent=40  --min=1  --max=15
+horizontalpodautoscaler.autoscaling/ashuprivateapp autoscaled
+❯ kubectl  get  hpa
+NAME             REFERENCE                   TARGETS         MINPODS   MAXPODS   REPLICAS   AGE
+ashuprivateapp   Deployment/ashuprivateapp   <unknown>/40%   1         15        0          8s
+
+```
+
 
