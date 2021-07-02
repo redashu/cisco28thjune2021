@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+ name: ashupv-1 
+spec: 
+ capacity:
+  storage: 10Gi 
+ accessModes:
+ - ReadWriteMany # ReadWriteOnce , ReadOnlyMany
+ storageClassName: fast # slow , very fast 
+ nfs: 
+  server: 172.31.19.147
+  path: /data/ashu 

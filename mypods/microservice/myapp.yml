@@ -1,0 +1,54 @@
+# creating pvc 
+apiVersion: v1
+kind: PersistentVolumeClaim 
+metadata:
+ name: ashupvc-111
+ namespace: ashu-project 
+spec:
+ resources:
+  requests:
+   storage: 5Gi
+ accessModes:
+ - ReadWriteMany
+ storageClassName: fast
+
+# creating DB deployment YAML 
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: ashudb
+  name: ashudb # name of deployment 
+  namespace: ashu-project # namespace 
+spec:
+  replicas: 1 # number of POD 
+  selector:
+    matchLabels:
+      app: ashudb
+  strategy: {}
+  template: # template will be used by Deploy to create POD 
+    metadata:
+      creationTimestamp: null
+      labels: # label of POD 
+        app: ashudb
+    spec:
+      volumes: # creating volume 
+      - name: ashudbvol # name of volume 
+        persistentVolumeClaim:
+         claimName: ashupvc-111 # name of PVC 
+      containers:
+      - image: mysql:5.6 # image of mysql 
+        name: mysql # name of container
+        volumeMounts:
+        - name: ashudbvol
+          mountPath: /var/lib/mysql/ 
+        env: # create / set value in ENV variable 
+        - name: MYSQL_ROOT_PASSWORD # predefine env 
+          valueFrom: # taking value from somewhere
+           secretKeyRef: # from secret 
+            name: ashusec1 # name of secret 
+            key: mypass # key name of secret
+        resources: {}
+status: {}
