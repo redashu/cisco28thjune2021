@@ -305,6 +305,102 @@ ashudb-7f64f8ddf7-sddg7   1/1     Running   0          103s
 
 ```
 
+### creating service for DB pod -- cluster IP type 
 
+```
+❯ kubectl  expose  deploy  ashudb  --type ClusterIP   --port 3306  --dry-run=client -o yaml
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: ashudb
+  name: ashudb
+spec:
+  ports:
+  - port: 3306
+    protocol: TCP
+    targetPort: 3306
+  selector:
+    app: ashudb
+  type: ClusterIP
+status:
+  loadBalancer: {}
+
+```
+
+### creating service 
+
+```
+❯ kubectl apply -f  myapp.yml
+persistentvolumeclaim/ashupvc-111 unchanged
+deployment.apps/ashudb configured
+service/ashudb created
+
+===
+
+❯ kubectl  get  svc
+NAME     TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)    AGE
+ashudb   ClusterIP   10.101.9.159   <none>        3306/TCP   26s
+
+```
+
+### creating web app deployment 
+
+```
+❯ kubectl   create  deployment  ashuweb  --image=wordpress:4.8-apache --namespace ashu-project   --dry-run=client -o yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: ashuweb
+  name: ashuweb
+  namespace: ashu-project
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ashuweb
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: ashuweb
+    spec:
+      containers:
+      - image: wordpress:4.8-apache
+        name: wordpress
+        resources: {}
+status: {}
+
+
+```
+
+
+### creating service nodeport for webapp
+
+```
+❯ kubectl  expose deployment  ashuweb  --type NodePort --port 80  --dry-run=client  -o yaml
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: ashuweb
+  name: ashuweb
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: ashuweb
+  type: NodePort
+status:
+  loadBalancer: {}
+
+```
 
 
